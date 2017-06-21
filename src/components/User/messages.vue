@@ -5,7 +5,7 @@
         <li>未读消息
           <button class="mark-all" @click="markAll">标记全部为已读</button>
         </li>
-        <li v-for="(mes,index) of data.hasnot_read_messages" :key="index">
+        <li v-for="(mes,index) in data.hasnot_read_messages" :key="index">
           <button class="fr mark-one" @click="markOne(mes.id)">标记</button>
           <router-link :to="{name:'user', params:{name:mes.author.loginname}}"
                        v-text="mes.author.loginname"></router-link>
@@ -21,7 +21,7 @@
 
       <ul class="old-message" v-if="data.has_read_messages.length > 0">
         <li>已读消息</li>
-        <li v-for="(mes,index) of data.has_read_messages" :key="index">
+        <li v-for="(mes,index) in data.has_read_messages" :key="index">
           <router-link :to="{name:'user', params:{name:mes.author.loginname}}"
                        v-text="mes.author.loginname"></router-link>
           <span>回复了你的话题</span>
@@ -38,60 +38,58 @@
 </template>
 <script>
   export default {
-    data(){
+    data () {
       return {
         data: {
           hasnot_read_messages: [],
           has_read_messages: []
-        },
+        }
       }
     },
-    created(){
-      this.getAllMessages();
+    created () {
+      this.getAllMessages()
     },
     methods: {
-      getAllMessages(){
-        this.$http.get(this.toChild + "/messages?accesstoken=" + this.access)
+      getAllMessages () {
+        this.$http.get(this.toChild + '/messages?accesstoken=' + this.access)
           .then(res => {
-            console.log(res);
-            this.data = res.data.data;
+            console.log(res)
+            this.data = res.data.data
           })
           .catch(err => {
-            console.log(err);
+            console.log(err)
           })
       },
-      markAll(){
-        this.$http.post(this.toChild + "/message/mark_all", {
-          accesstoken: this.access,
+      markAll () {
+        this.$http.post(this.toChild + '/message/mark_all', {
+          accesstoken: this.access
         })
           .then(res => {
-//						console.log(res);
             if (res.data.success) {
-              alert('标记成功');
-              this.getAllMessages();
+              alert('标记成功')
+              this.getAllMessages()
             }
           })
           .catch(err => {
-            console.log(err);
+            console.log(err)
           })
       },
-      markOne(id){
-        this.$http.post(this.toChild + "/message/mark_one/" + id, {
-          accesstoken: this.access,
+      markOne (id) {
+        this.$http.post(this.toChild + '/message/mark_one/' + id, {
+          accesstoken: this.access
         })
           .then(res => {
-//						console.log(res);
             if (res.data.success) {
-              alert('标记成功');
-              this.getAllMessages();
+              alert('标记成功')
+              this.getAllMessages()
             }
           })
           .catch(err => {
-            console.log(err);
+            console.log(err)
           })
       }
     },
-    props: ["toChild", "access"],
+    props: ['toChild', 'access']
   }
 </script>
 <style scoped>

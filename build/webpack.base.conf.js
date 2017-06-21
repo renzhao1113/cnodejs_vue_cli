@@ -2,15 +2,21 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
+// highlight.js的加载
+var lang = require('../node_modules/highlight.js-async-webpack/src/file.lang.hljs')
+var _entry = {
+  app: './src/main.js'
+}
+for (var i = 0; i < lang.length; i++) {
+  _entry[lang[i]+''] = './node_modules/mavon-editor/dist/js/' + lang[i] + '.js'
+}
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
 module.exports = {
-  entry: {
-    app: './src/main.js'
-  },
+  entry: _entry,
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -27,7 +33,7 @@ module.exports = {
   },
   module: {
     rules: [
-      /*{
+      {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         enforce: 'pre',
@@ -35,7 +41,7 @@ module.exports = {
         options: {
           formatter: require('eslint-friendly-formatter')
         }
-      },*/
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',

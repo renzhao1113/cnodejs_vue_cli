@@ -36,7 +36,7 @@
 					<div class="recent-title">最近创建的话题</div>
 					<div class="recent-create-content">
 						<ul>
-							<li v-for="(item,index) of userInfo.recent_topics" :key="index">
+							<li v-for="(item,index) in userInfo.recent_topics" :key="index">
 								<router-link  class="touxiang fl" :to="{name:'user',params:{name:item.author.loginname},query:{id:item.author_id}}"><img :src="item.author.avatar_url" alt=""></router-link>
 								<div :class="{'list-title':true, top: item.top, ask: item.tab=='ask', share:item.tab=='share', good:item.good, job:item.tab=='job'}" >
 									<router-link :to="{name:'topicDetail',params:{id:item.id}}">
@@ -49,13 +49,12 @@
 					</div>
 				</div>
 				<!--最近创建的话题结束-->
-
 				<!--最近参与的话题开始-->
 				<div v-if="userInfo.recent_replies.length!=0">
 					<div class="recent-title">最近参与的话题</div>
 					<div class="recent-create-content">
 						<ul>
-							<li v-for="(item,index) of userInfo.recent_replies" :key="index">
+							<li v-for="(item,index) in userInfo.recent_replies" :key="index">
 								<router-link  class="touxiang fl" :to="{name:'user',params:{name:item.author.loginname},query:{id:item.author_id}}"><img :src="item.author.avatar_url" alt=""></router-link>
 								<div :class="{'list-title':true, top: item.top, ask: item.tab=='ask', share:item.tab=='share', good:item.good, job:item.tab=='job'}" >
 									<router-link :to="{name:'topicDetail',params:{id:item.id}}">
@@ -74,65 +73,66 @@
 
 </template>
 <script>
-	export default {
-		data(){
-			return {
-				collectCount:0,
-				messageCount:0,
-				userInfo:{
-					recent_replies:[],
-					recent_topics:[],
-				},
-				userName:"",
-			}
-		},
-		methods:{
-			abc(){
-				this.$http.get(this.toChild+"/user/"+this.userName)
-					.then(result=>{
-						this.userInfo = result.data.data;
-						this.$http.get(this.toChild+"/topic_collect/"+this.$route.params.name)
-							.then(res=>{
-								this.collectCount = res.data.data.length;
-								console.log("收藏了" + this.collectCount);
-							})
-							.catch(err=>{
-								alert(err.data);
-							});
-					})
-					.catch(err=>{
-						alert(err.data);
-					});
-
-			},
-			getMessagesCount(){
-				this.$http.get(this.toChild+"/message/count"+"?accesstoken="+this.access)
-					.then(res=>{
-						this.messageCount = res.data.data;
-						console.log(this.messageCount);
-					})
-					.catch(err=>{
-						alert(err.data)
-					})
-			}
-		},
-		created(){
-			this.userName = this.$route.params.name;
-			this.abc();
-		},
-		beforeRouteUpdate(to,from,next){
-			this.userName = to.params.name;
-			this.abc();
-			next();
-		},
-		props:['toChild','access']
-	}
+  export default {
+    data () {
+      return {
+        collectCount: 0,
+        messageCount: 0,
+        userInfo: {
+          recent_replies: [],
+          recent_topics: []
+        },
+        userName: ''
+      }
+    },
+    methods: {
+      abc () {
+        this.$http.get(this.toChild + '/user/' + this.userName)
+          .then(result => {
+            this.userInfo = result.data.data
+            this.$http.get(this.toChild + '/topic_collect/' + this.$route.params.name)
+              .then(res => {
+                this.collectCount = res.data.data.length
+              })
+              .catch(err => {
+                alert(err.data)
+              })
+          })
+          .catch(err => {
+            alert(err.data)
+          })
+      },
+      getMessagesCount () {
+        this.$http.get(this.toChild + '/message/count' + '?accesstoken=' + this.access)
+          .then(res => {
+            this.messageCount = res.data.data
+            console.log(this.messageCount)
+          })
+          .catch(err => {
+            alert(err.data)
+          })
+      }
+    },
+    created () {
+      this.userName = this.$route.params.name
+      this.abc()
+    },
+    beforeRouteUpdate (to, from, next) {
+      this.userName = to.params.name
+      this.abc()
+      next()
+    },
+    props: ['toChild', 'access']
+  }
 </script>
 <style scoped>
   .hasnot-read{
-    padding: 2px 4px; background: #80bd01; border-radius: 5px; color: #fff;
+    padding: 2px 4px;
+    background: #80bd01;
+    border-radius: 5px;
+    color: #fff
   }
   .hasnot-read+span{
-    font-size: 12px;
+    font-size: 12px
   }
 </style>

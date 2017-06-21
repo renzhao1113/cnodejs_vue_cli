@@ -25,114 +25,114 @@
 	</div>
 </template>
 <script>
-	export default {
-		data(){
-			return {
-				content:"",
-				title:'',
-				tab:'请选择',
-				toolbars: {
-					bold: true, // 粗体
-					italic: true, // 斜体
-					header: true, // 标题
-					underline: true, // 下划线
-					strikethrough: true, // 中划线
-					mark: true, // 标记
-					superscript: true, // 上角标
-					subscript: true, // 下角标
-					quote: true, // 引用
-					ol: true, // 有序列表
-					ul: true, // 无序列表
-					link: true, // 链接
-					imagelink: false, // 图片链接
-					code: true, // code
-					table: true, // 表格
-					subfield: true, // 是否需要分栏
-					fullscreen: true, // 全屏编辑
-					readmodel: true, // 沉浸式阅读
-					htmlcode: true, // 展示html源码
-					help: true, // 帮助
-					/* 1.3.5 */
-					undo: true, // 上一步
-					redo: true, // 下一步
-					trash: true, // 清空
-					save: false, // 保存（触发events中的save事件）
-					/* 1.4.2 */
-					navigation: true // 导航目录
-				},
-				disabled:true,
-				id:"",
-				file_img:{}
-			}
-		},
-		props:["toChild","access"],
-		methods:{
-			change(){
-				this.disabled = this.title.length < 10 || this.tab != 'dev';
-			},
-			submit(){
-				if(!this.id){
-					this.$http.post(this.toChild+"/topics",{
-						accesstoken: this.access,
-						title:this.title,
-						tab:this.tab,
-						content:this.content
-					})
-						.then(res=>{
-							if(res.data.success){
-								alert('发帖成功');
-								this.$router.push({
-									path:'/user/'+this.$store.getters.getMyInfo.loginname
-								})
-							}
-						})
-						.catch(err=>{
-							alert(err.data);
-						})
-				}else{
-					this.$http.post(this.toChild+"/topics/update",{
-						accesstoken: this.access,
-						title:this.title,
-						tab:this.tab,
-						content:this.content,
-						topic_id:this.id,
-					})
-						.then(res=>{
-							if(res.data.success){
-								alert('发帖成功');
-								//发帖成功后调回个人中心
-								this.$router.push({
-									path:'/user/'+this.$store.getters.getMyInfo.loginname
-								})
-							}
-						})
-						.catch(err=>{
-							alert(err.data);
-						})
-				}
-			},
-			changeText(value,render){
-				this.content = render;
-			},
-		},
-		created(){
-			this.id = this.$route.params.id
-			if(this.id){
-				this.$http.get(this.toChild+"/topic/"+this.id+"?mdrender=false")
-					.then(res=>{
-						let data = res.data.data;
-						this.content = data.content;
-						this.title = data.title;
-						this.tab = data.tab;
-						this.disabled = this.title.length < 10 || this.tab != 'dev';
-					})
-					.catch(err=>{
-						console.log(err);
-					})
-			}
-			this.disabled = this.title.length < 10 || this.tab != 'dev';
-		}
-	}
+  export default {
+    data () {
+      return {
+        content: '',
+        title: '',
+        tab: '请选择',
+        toolbars: {
+          bold: true, // 粗体
+          italic: true, // 斜体
+          header: true, // 标题
+          underline: true, // 下划线
+          strikethrough: true, // 中划线
+          mark: true, // 标记
+          superscript: true, // 上角标
+          subscript: true, // 下角标
+          quote: true, // 引用
+          ol: true, // 有序列表
+          ul: true, // 无序列表
+          link: true, // 链接
+          imagelink: false, // 图片链接
+          code: true, // code
+          table: true, // 表格
+          subfield: true, // 是否需要分栏
+          fullscreen: true, // 全屏编辑
+          readmodel: true, // 沉浸式阅读
+          htmlcode: true, // 展示html源码
+          help: true, // 帮助
+          /* 1.3.5 */
+          undo: true, // 上一步
+          redo: true, // 下一步
+          trash: true, // 清空
+          save: false, // 保存（触发events中的save事件）
+          /* 1.4.2 */
+          navigation: true // 导航目录
+        },
+        disabled: true,
+        id: '',
+        file_img: {}
+      }
+    },
+    props: ['toChild', 'access'],
+    methods: {
+      change () {
+        this.disabled = this.title.length < 10 || this.tab !== 'dev'
+      },
+      submit () {
+        if (!this.id) {
+          this.$http.post(this.toChild + '/topics', {
+            accesstoken: this.access,
+            title: this.title,
+            tab: this.tab,
+            content: this.content
+          })
+            .then(res => {
+              if (res.data.success) {
+                alert('发帖成功')
+                this.$router.push({
+                  path: '/user/' + this.$store.getters.getMyInfo.loginname
+                })
+              }
+            })
+            .catch(err => {
+              alert(err.data)
+            })
+        } else {
+          this.$http.post(this.toChild + '/topics/update', {
+            accesstoken: this.access,
+            title: this.title,
+            tab: this.tab,
+            content: this.content,
+            topic_id: this.id
+          })
+            .then(res => {
+              if (res.data.success) {
+                alert('发帖成功')
+                // 发帖成功后调回个人中心
+                this.$router.push({
+                  path: '/user/' + this.$store.getters.getMyInfo.loginname
+                })
+              }
+            })
+            .catch(err => {
+              alert(err.data)
+            })
+        }
+      },
+      changeText (value, render) {
+        this.content = render
+      }
+    },
+    created () {
+      this.id = this.$route.params.id
+      if (this.id) {
+        this.$http.get(this.toChild + '/topic/' + this.id + '?mdrender=false')
+          .then(res => {
+            let data = res.data.data
+            this.content = data.content
+            this.title = data.title
+            this.tab = data.tab
+            this.disabled = this.title.length < 10 || this.tab !== 'dev'
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+      this.disabled = this.title.length < 10 || this.tab !== 'dev'
+    }
+  }
 </script>
 <style scoped>
   .tap-warn , .title-warn{

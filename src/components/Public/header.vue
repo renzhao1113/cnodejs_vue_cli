@@ -18,22 +18,18 @@
 </template>
 <script>
   export default {
-    data(){
+    data () {
       return {
-        key: '',
+        key: ''
       }
     },
-    methods: {
-      goBack(){
-        this.$router.go(-1);
-      }
-    },
+    methods: {},
     components: {},
     computed: {
-      getMyName(){
-        return this.$store.getters.getMyInfo.loginname;
+      getMyName () {
+        return this.$store.getters.getMyInfo.loginname
       }
-    },
+    }
   }
 </script>
 <style scoped>

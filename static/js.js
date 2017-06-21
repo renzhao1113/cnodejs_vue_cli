@@ -1,17 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import App from './App'
-import axios from 'axios'
-import router from './router'
-import dateFormat from './filter'
-
-import store from './store'
-import { InfiniteScroll, Button } from 'mint-ui'
-import mavonEditor from 'mavon-editor'
-import '../node_modules/mavon-editor/dist/css/index.css'
-
-/*
 import '../node_modules/mavon-editor/dist/js/hljs.1c'
 import '../node_modules/mavon-editor/dist/js/hljs.abnf'
 import '../node_modules/mavon-editor/dist/js/hljs.accesslog'
@@ -188,29 +174,3 @@ import '../node_modules/mavon-editor/dist/js/hljs.xml'
 import '../node_modules/mavon-editor/dist/js/hljs.xquery'
 import '../node_modules/mavon-editor/dist/js/hljs.yaml'
 import '../node_modules/mavon-editor/dist/js/hljs.zephir'
-*/
-
-import 'mint-ui/lib/style.css'
-import '../static/css/base.css'
-import '../static/css/style.css'
-
-Vue.config.productionTip = false
-Vue.prototype.$http = axios
-
-Vue.component(Button.name, Button)
-Vue.use(InfiniteScroll)
-Vue.use(mavonEditor)
-
-// 全局过滤器
-Object.keys(dateFormat).forEach((key, val) => {
-  Vue.filter(key, dateFormat[key])
-})
-
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
-})
